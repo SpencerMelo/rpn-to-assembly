@@ -33,3 +33,12 @@ class Scope(Enum):
             "(": Scope.Open,
             ")": Scope.Close,
         }.get(s)
+
+class Command(Enum):
+    Res = auto()   # RES
+
+    @staticmethod
+    def from_str(s: str) -> "Command | None":
+        return {
+            "RES": Command.Res,
+        }.get(s)

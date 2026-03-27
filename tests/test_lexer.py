@@ -1,6 +1,6 @@
 import pytest
-from src.lexer.lexer import lex, Token, TokenInt, TokenFloat, TokenOp, TokenScope
-from src.config.config import Operator, Scope
+from src.lexer.lexer import lex, Token, TokenInt, TokenFloat, TokenOp, TokenScope, TokenCommand, TokenVariable
+from src.config.config import Operator, Scope, Command
 
 
 @pytest.mark.parametrize("input, expected", [
@@ -43,6 +43,13 @@ from src.config.config import Operator, Scope
     ("3\t4",            [TokenInt(3), TokenInt(4)]),
     ("3\n4",            [TokenInt(3), TokenInt(4)]),
     ("3 4 + 5 *",       [TokenInt(3), TokenInt(4), TokenOp(Operator.Add), TokenInt(5), TokenOp(Operator.Mul)]),
+    ("RES",             [TokenCommand(Command.Res)]),
+    ("(RES)",           [TokenScope(Scope.Open), TokenCommand(Command.Res), TokenScope(Scope.Close)]),
+    ("(10 RES)",        [TokenScope(Scope.Open), TokenInt(10), TokenCommand(Command.Res), TokenScope(Scope.Close)]),
+    ("(VARIABLE)",      [TokenScope(Scope.Open), TokenVariable("VARIABLE"), TokenScope(Scope.Close)]),
+    ("(15 VARIABLE)",   [TokenScope(Scope.Open), TokenInt(15), TokenVariable("VARIABLE"), TokenScope(Scope.Close)]),
+    ("(15.5 SPENCER)", [TokenScope(Scope.Open), TokenFloat(15.5), TokenVariable("SPENCER"), TokenScope(Scope.Close)]),
+    ("(15.5 SPEN RES CER)", [TokenScope(Scope.Open), TokenFloat(15.5), TokenVariable("SPEN"), TokenCommand(Command.Res), TokenVariable("CER"), TokenScope(Scope.Close)]),
 ])
 def test_lex(input: str, expected: list[Token]):
     assert lex(input) == expected
@@ -58,6 +65,8 @@ def test_lex(input: str, expected: list[Token]):
     ("3 +- 4",   "Unexpected operation"),
     ("3+4",      "Unexpected character"),
     ("1.5+2",    "Unexpected character"),
+    ("(res)",    "Unexpected character"),
+    ("(15 S!P)", "Unexpected character"),
 ])
 def test_lex_raises(input: str, match: str):
     with pytest.raises(ValueError, match=match):
