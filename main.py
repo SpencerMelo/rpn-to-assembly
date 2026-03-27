@@ -15,5 +15,8 @@ if __name__ == "__main__":
     with open(sys.argv[1], 'r') as file:
         content = file.read()
 
-    tokens = lex(content)
-    print(tokens)
+    for line in content.splitlines():
+        line = line.strip()
+        if line:
+            tokens = lex(line)
+            print(tokens)
