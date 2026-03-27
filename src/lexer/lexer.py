@@ -60,6 +60,7 @@ class TokenVariable:
 Token = TokenInt | TokenFloat | TokenOp | TokenScope | TokenCommand | TokenVariable
 
 
+# parseExpressao
 def lex(input: str) -> list[Token]:
     tokens: list[Token] = []
     _state_pending(input, 0, tokens)

@@ -2,7 +2,7 @@ import pytest
 from src.lexer.lexer import lex, Token, TokenInt, TokenFloat, TokenOp, TokenScope, TokenCommand, TokenVariable
 from src.config.config import Operator, Scope, Command
 
-
+# executarExpressao (casos validos)
 @pytest.mark.parametrize("input, expected", [
     ("42",              [TokenInt(42)]),
     ("3.50",            [TokenFloat(3.50)]),
@@ -54,7 +54,7 @@ from src.config.config import Operator, Scope, Command
 def test_lex(input: str, expected: list[Token]):
     assert lex(input) == expected
 
-
+# executarExpressao (casos invalidos)
 @pytest.mark.parametrize("input, match", [
     ("3 a 4",    "Unexpected character"),
     (".5",       "Unexpected character"),

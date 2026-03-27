@@ -7,16 +7,19 @@
 import sys
 from src.lexer.lexer import lex
 
+# lerArquivo
+def read_lines(path: str) -> list[str]:
+    with open(path, 'r') as file:
+        return [line.strip() for line in file if line.strip()]
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print(f"Usage: {sys.argv[0]} <file>")
         sys.exit(1)
 
-    with open(sys.argv[1], 'r') as file:
-        content = file.read()
+    for line in read_lines(sys.argv[1]):
+        print(lex(line))
 
-    for line in content.splitlines():
-        line = line.strip()
-        if line:
-            tokens = lex(line)
-            print(tokens)
+    # Sem codegen, nao tenho dominio de Assembly, mesmo utilizando IA pra gerar e funcionando,
+    # nao sou capacitado suficiente em assembly pra revisar e responder perguntas com confianca sobre codigo gerado.
