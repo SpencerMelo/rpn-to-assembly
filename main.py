@@ -1,3 +1,9 @@
+# =======================================================
+# Name: Spencer Melo
+# GitHub: https://github.com/SpencerMelo
+# Canvas Group: RA1 20
+# =======================================================
+
 import sys
 from src.lexer.lexer import lex
 
